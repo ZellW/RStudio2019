@@ -1,0 +1,17 @@
+---
+title: "Binary Classification with Text: The IMDB Dataset"
+subtitle: "Scenario 1: One-hot Encoding"
+author: "Rick Scavetta"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+
+# Initialize package
+
+library(keras)
+library(tidyverse)
+```
+
+See the exercise cocument for instructions.

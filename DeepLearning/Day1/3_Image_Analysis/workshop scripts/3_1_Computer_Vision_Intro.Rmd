@@ -1,0 +1,190 @@
+---
+title: "Computer Vision"
+subtitle: "Intro to Convnets"
+author: "Rick Scavetta"
+output:
+  html_document:
+  fig_caption: true
+  toc: true
+  toc_float:
+    collapsed: false
+    smooth_scroll: false
+  toc_depth: 2
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, cache = TRUE, eval = FALSE)
+
+# Initialize packages
+library(keras)
+library(tidyverse)
+
+# define the directories:
+source("dir_cat_dog.R")
+```
+
+# {.tabset .tabset-fade .tabset-pills}
+
+## Learning Goals & Functions
+
+### Learning Goals
+
+Understand how to set up and train a convolutional neural network (CNN) for computer vision.
+
+### Functions in this session:
+
+Functions in the `tfruns` package:
+
+| Function                       | Use                                                                               |
+|:-------------------------------|:----------------------------------------------------------------------------------|
+| `layer_conv_2d()`              | Add a convolutional layer.                                                        |
+| `layer_max_pooling_2d()`       | Add a 2d Max pooling layer.                                                       |
+| `layer_flatten()`              | Add a flattening layer.                                                           |
+| `optimizer_rmsprop()`          | Specify the optimizer function learning rate manually.                            |
+| `image_data_generator()`       | Generator function for importing and scaling images.                              |
+| `flow_images_from_directory()` | Sequentially read in all images from a directory using a generator function.      |
+| `fit_generator()`              | Train a model using generator functions.                                          |
+| `evaluate_generator()`         | Evaluate a convnet model that uses generator functions with a test set generator. |
+ 
+## Data
+
+### Examine data:
+
+```{r strImagesPre}
+
+data.frame(Cats = c(length(list.files(train_cats_dir)),
+                    length(list.files(validation_cats_dir)),
+                    length(list.files(test_cats_dir))),
+           Dogs = c(length(list.files(train_dogs_dir)),
+                    length(list.files(validation_dogs_dir)),
+                    length(list.files(test_dogs_dir))),
+           row.names = c("Training", "Validation", "Test"))
+
+
+```
+
+## Define Network
+
+- Four sequential conv and max pooling layers
+- Flatten layer
+- Densely-connected network
+- Single binary output
+
+```{r}
+
+model <- _______() %>%
+  # Convolution and max pooling
+  _______(filters = _______, kernel_size = _______, activation = _______, input_shape = _______) %>%
+  _______(pool_size = _______) %>%
+  
+  # Another convolution and max pooling
+  _______(filters = _______, kernel_size = _______, activation = _______) %>% 
+  _______(pool_size = _______) %>%
+  
+  # Another convolution and max pooling
+  _______(filters = _______, kernel_size = _______, activation = _______) %>% 
+  _______(pool_size = _______) %>%
+  
+  # Another convolution and max pooling
+  _______(filters = _______, kernel_size = _______, activation = _______) %>% 
+  _______(pool_size = _______) %>%
+  
+  # Flatten the tensors
+  _______() %>%
+  
+  # Dense layers
+  _______(units = _______, activation = _______) %>%
+  _______(units = _______, activation = _______)
+
+summary(model)
+
+```
+
+Compile the model:
+
+```{r}
+# What is the loss and the evaluation metric?
+model %>% compile(
+  optimizer = optimizer_rmsprop(lr = 1e-4),
+  loss = _______,
+  metrics = _______
+)
+
+```
+
+## Read images from directories
+
+Use `image_data_generator()` and rescale the values to 1/255. Use `()`, remember the target size and analytical problem for the `class_mode`.
+
+```{r}
+
+train_datagen <- _______(rescale = _______)
+validation_datagen <- _______(rescale = _______)
+
+train_generator <- _______(
+  train_dir,
+  train_datagen,
+  target_size = _______,
+  batch_size = 20,
+  class_mode = _______
+)
+
+validation_generator <- _______(
+  validation_dir,
+  validation_datagen,
+  target_size = _______,
+  batch_size = 20,
+  class_mode = _______
+)
+```
+
+## Train
+
+We have a net `fit()` function here for generators. The training and the validation set are also differet, but we specified them in the previous step.
+
+```{r}
+
+history <- model %>% _______(
+  _______,
+  steps_per_epoch = 100,
+  epochs = 30,
+  validation_data = _______,
+  validation_steps = 50
+)
+
+```
+
+View history
+
+```{r historyView}
+plot(history)
+```
+
+## Save the model
+
+```{r modelSave}
+# model %>% save_model_hdf5("cats_and_dogs_small_convnet.h5")
+```
+
+## Evaluation
+
+Just like we prepared the training and validation set, prepare the test set. Finally, we want to evaluater, but the `evaluate()` function is also a bit different, it is specifically for the generator situation.
+
+```{r}
+
+model_conv <- load_model_hdf5("cats_and_dogs_small_convnet.h5")
+
+# Test generator function:
+test_datagen <- _______(rescale = _______)
+
+test_generator <- _______(
+  test_dir,
+  test_datagen,
+  target_size = _______,
+  batch_size = 20,
+  class_mode = _______
+)
+
+model_conv %>% _______(test_generator, steps = 50)
+
+```
