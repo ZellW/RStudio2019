@@ -91,7 +91,7 @@ network <- network %>%
 # Part 4:
 # Adds the classifier on top
 network <- network %>%
-  layer_dense(units = 46, activation = "softmax")
+  layer_dense(units = 46, activation = "softmax")# 46 possible outcomes (the newswires)
 
 ```
 
@@ -101,12 +101,10 @@ Compile the model
 network %>% compile(
   optimizer = "rmsprop",
   loss = "sparse_categorical_crossentropy",
-  metrics = "accuracy"
-)
+  metrics = "accuracy")
 
 summary(network)
 ```
-
 
 Train the model
 
@@ -146,13 +144,15 @@ history <- network %>% fit(
   train_data, 
   train_labels,
   epochs = 35,
-  batch_size = 512,
-  validation_split = 0.2
+  batch_size = 512#,
+  #validation_split = 0.2 do not need validation since the number of epochs has alreday been reduced
 )
 ```
 
 ```{r}
 # Peak validation accuracy:
-history$metrics$val_acc[35]
+#history$metrics$val_acc[35]
+
+history$metrics$acc[35]
 ```
 

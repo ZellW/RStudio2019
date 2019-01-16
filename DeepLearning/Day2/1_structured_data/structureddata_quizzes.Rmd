@@ -1,0 +1,160 @@
+---
+title: "Deep learning for structured data"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Using the Keras Functional API 
+
+The quiz starts from the `1_heterogeneous_data_1.Rmd` notebook.
+
+__Note that we've copied common chunks (chunks you can re-use) to the end of the notebook so you don't have to start from scratch__.
+
+### Quiz 1
+
+On the same prediction task, now use the Keras Functional API.
+
+Use all of the continuous variables and have them share a single input.
+
+In addition, add a categorical variable of your choice (this will need to get its own input).
+
+Note: All answers in this quiz will be indicated correct as we just want to see the actual accuracy you obtained.
+
+```{r quiz1}
+quiz(
+  question("Which categorical variable did you choose?",
+    answer("workclass", correct = TRUE),
+    answer("education", correct = TRUE),
+    answer("marital_status", correct = TRUE),
+    answer("occupation", correct = TRUE),
+    answer("relationship", correct = TRUE),
+    answer("sex", correct = TRUE),
+    answer("race", correct = TRUE),
+    answer("native_country", correct = TRUE),
+    type = "single"
+  ),
+  question("In which region is the final accuracy on the validation split?",
+    answer("lower than 0.8", correct = TRUE),
+    answer("between 0.8 and 0.82", correct = TRUE),
+    answer("between 0.82 and 0.83", correct = TRUE),
+    answer("between 0.83 and 0.84", correct = TRUE),
+    answer("between 0.84 and 0.85", correct = TRUE),
+    answer("between 0.85 and 0.86", correct = TRUE),
+    answer("higher than 0.86", correct = TRUE),
+    type = "single"
+  )
+)
+```
+
+
+### Quiz 2
+
+Modify your model to also predict `age`. That is, remove `age` from the predictors and use it as a second target, together with `salary`.
+
+Train for 20 epochs just as we did before.
+
+
+```{r quiz2}
+quiz(
+  question("What can you say regarding accuracy on salary prediction on the one hand, and mean squared error on age on the other hand? We're referring to the validation set.",
+    answer("accuracy on salary is about the same as before, MSE on age is < 100"),
+    answer("accuracy on salary is noticeably worse, MSE on age is < 100"),
+    answer("accuracy on salary is noticeably worse, MSE on age is > 100", correct = TRUE)
+  )
+)
+```
+
+
+## Embeddings for uncovering relationships 
+
+All quizzes in this section start from the `2_embeddings_so.Rmd` notebook.
+
+### Quiz 1
+
+We just ran the embeddings model in `2_embeddings_so.Rmd`. 
+
+Find the cosine similarity between the embedded representation of `R` and
+
+- `Python`
+- `Julia`
+
+To answer this question, you will need to 
+
+- extract the weight matrix for the "programming languages" embeddings layer,
+- identify the rows for the two languages, respectively, and
+- calculate cosine similarity
+
+```{r quiz3}
+quiz(
+  question("In which region are the cosine similarities?",
+    answer("between -0.2 and 0"),
+    answer("between 0 and 0.2", correct = TRUE),
+    answer("between 0.2 and 0.4")
+  )
+)
+```
+
+
+### Quiz 2
+
+When showing the embeddings obtained for job values, we pointed out that the target variable chosen could have a significant effect.
+
+Compare the `OperatingSystem` embeddings learned from predicting `JobSatisfaction` to those learned from predicting `EthicsChoice`. How different are they, looking at the 2d PCA reduction?
+
+```{r quiz4}
+quiz(
+  question("The 2d reductions of OperatingSystem embeddings, when computed with targets EthicsChoice and JobSatisfaction, respectively, are",
+    answer("very different"),
+    answer("not too different", correct = TRUE)
+  )
+)
+```
+
+
+## Embeddings for improving accuracy
+
+### Quiz 1
+
+Try to further improve accuracy, starting from the embeddings model.
+
+Things you could try:
+
+- adding further specialized layers to the `prod_embed` branch and the `cont_dense` branches before concatenating them
+- adding more capacity to the network in various ways
+- changing activation functions
+- preprocessing the data differently / feature engineering
+
+Some concrete ideas:
+
+- instead of scaling or normalizing the continuous data (`Quant` and `Val`), try binning them
+- try including more than just the top 500 products
+- try including salesperson ID
+
+Feel free to try whatever you like best / comes to mind!
+
+```{r quiz5}
+quiz(
+  question("Were you able to improve accuracy on the validation set? If so, in what area did you land?",
+    answer("No."),
+    answer("higher than 0.966"),
+    answer("higher than 0.97"),
+    answer("higher than 0.975")
+  )
+)
+```
+
+## Embeddings on the Census Income dataset (optional)
+
+### Quiz 1
+
+We're continuing from the `heterogeneous_data_1.Rmd` notebook.
+Can you improve accuracy using embeddings? 
+
+We've copied some common, reusable code from that notebook to `heterogeneous_data_2.Rmd`.
+Please use that to continue the task (you can also use any snippets you have left over from the functional API exercise of course!)

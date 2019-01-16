@@ -1,0 +1,56 @@
+---
+title: "Object detection"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## Multiple object classification 
+
+The quiz assumes we've looked at the `classification_localization.Rmd` notebook and seen how to classify a single object in an image.
+
+
+### Quiz 1
+
+We've just seen how to classify a single object in an image. 
+What if we wanted to classify multiple objects?
+
+Choose all statements that are true.
+
+```{r quiz1}
+quiz(
+  question("If we wanted to classify multiple objects in an image, ...",
+    answer("... we would have to change the data generator to use multi-hot encoding", correct = TRUE),
+    answer("we should use a sigmoid activation instead of softmax", correct = TRUE),
+    answer("we should use mean squared error loss instead of categorical crossentropy"),
+    answer("we should use binary crossentropy instead of categorical crossentropy", correct = TRUE)
+  )
+)
+```
+
+
+## Combining classification and regression
+
+Think about constructing a model that does both classification and regression at the same time.
+
+Check all that apply.
+
+### Quiz 2
+
+
+```{r quiz2}
+quiz(
+  question("To perform both classification and regression at the same time, we need to",
+    answer("use the functional API with two inputs and two outputs"),
+    answer("use the functional API with a single input and two outputs", correct = TRUE),
+    answer("assign 4 units to the regression output and 1 unit to the class output"),
+    answer("use the same loss function on both outputs"),
+    answer("be prepared to experiment with scaling the loss functions, to give them equal / appropriate weights", correct = TRUE)
+  )
+)
+```

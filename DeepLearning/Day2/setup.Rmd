@@ -1,0 +1,48 @@
+---
+title: 'Setup scripts'
+author: "Sigrid Keydana"
+date: "10/16/2018"
+output: html_document
+---
+
+
+# Setup for slot 2 
+
+```{bash}
+cd 2_object_detection
+mkdir data && cd data
+curl -OL http://pjreddie.com/media/files/VOCtrainval_06-Nov-2007.tar
+curl -OL https://storage.googleapis.com/coco-dataset/external/PASCAL_VOC.zip
+tar -xvf VOCtrainval_06-Nov-2007.tar
+unzip PASCAL_VOC.zip
+mv PASCAL_VOC/*.json .
+rmdir PASCAL_VOC
+```
+
+
+# R libraries needed
+
+```{r}
+devtools:install_github("rstudio/keras")
+devtools:install_github("rstudio/tfdatasets")
+devtools:install_github("rstudio/tensorflow")
+
+install.packages("readr")
+install.packages("dplyr")
+install.packages("ggplot2")
+install.packages("purrr")
+install.packages("abind")
+install.packages("learnr")
+install.packages("forcats")
+install.packages("ggrepel")
+install.packages("magick")
+install.packages("viridis")
+install.packages("lime")
+install.packages("rjson")
+install.packages("tidyr")
+install.packages("stringr")
+install.packages("tibble")
+install.packages("RefManageR")
+install.packages("DMwR2")
+```
+

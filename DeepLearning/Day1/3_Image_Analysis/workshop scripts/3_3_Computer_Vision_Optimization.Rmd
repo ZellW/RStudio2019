@@ -52,8 +52,8 @@ source("dir_cat_dog.R")
 Choose the correct pre-defined convnet and use the `"imagenet weights"`
 
 ```{r getConv}
-conv_base <- _______(
-  weights = _______,
+conv_base <- application_vgg16(
+  weights = freeze_weights(),
   include_top = FALSE,
   input_shape = c(150, 150, 3)
 )

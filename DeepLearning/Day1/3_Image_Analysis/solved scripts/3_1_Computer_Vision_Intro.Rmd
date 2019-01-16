@@ -13,6 +13,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+setwd("~/GitHub/RStudio2019/DeepLearning/Day1/3_Image_Analysis/solved scripts")
 knitr::opts_chunk$set(echo = TRUE, cache = TRUE, eval = FALSE)
 
 # Initialize packages
@@ -20,7 +21,35 @@ library(keras)
 library(tidyverse)
 
 # define the directories:
-source("dir_cat_dog.R")
+#source("dir_cat_dog.R")
+
+# define the directories:
+#source("dir_cat_dog.R")# Data Directories for cat and dog pictures
+
+# For local use:
+# base_dir <- "~/data/cats_and_dogs"
+base_dir <- "../../../../../LargeDataFiles/CatsDogs"
+
+# For RStudio::Conf
+#base_dir <- "/../../usr/share/class/cats_and_dogs"
+
+# Train sets:
+train_dir <- file.path(base_dir, "train", fsep = "/")
+train_cat_dir <- file.path(train_dir, "cat", fsep = "/")
+train_dog_dir <- file.path(train_dir, "dog", fsep = "/")
+
+# Validation sets:
+validation_dir <- file.path(base_dir, "validation", fsep = "/")
+validation_cat_dir <- file.path(validation_dir, "cat", fsep = "/")
+validation_dog_dir <- file.path(validation_dir, "dog", fsep = "/")
+
+# Test sets:
+test_dir <- file.path(base_dir, "test", fsep = "/")
+test_cat_dir <- file.path(test_dir, "cat", fsep = "/")
+test_dog_dir <- file.path(test_dir, "dog", fsep = "/")
+
+#list.files("../../../../../LargeDataFiles/CatsDogs")
+
 ```
 
 # {.tabset .tabset-fade .tabset-pills}
@@ -52,15 +81,13 @@ Functions in the `tfruns` package:
 
 ```{r strImagesPre}
 
-data.frame(Cats = c(length(list.files(train_cats_dir)),
-                    length(list.files(validation_cats_dir)),
-                    length(list.files(test_cats_dir))),
-           Dogs = c(length(list.files(train_dogs_dir)),
-                    length(list.files(validation_dogs_dir)),
-                    length(list.files(test_dogs_dir))),
+data.frame(Cats = c(length(list.files(train_cat_dir)),
+                    length(list.files(validation_cat_dir)),
+                    length(list.files(test_cat_dir))),
+           Dogs = c(length(list.files(train_dog_dir)),
+                    length(list.files(validation_dog_dir)),
+                    length(list.files(test_dog_dir))),
            row.names = c("Training", "Validation", "Test"))
-
-
 ```
 
 ## Define Network
